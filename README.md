@@ -8,7 +8,7 @@ Files can also be left up and available for download to iOS at all times to anyo
 
 1. Both devices on the same WiFi network
 
-2. On Linux, this program `p-drop`. Available in releases above (link: https://github.com/cenkbilgen/p-drop-linux/releases/download/v1.0/p-drop) or compile your own.
+2. On Linux, download `p-drop` from releases above (link: https://github.com/cenkbilgen/p-drop-linux/releases/download/v1.0/p-drop) or compile your own.
 
 3. On iOS, the `p-drop` app
 
