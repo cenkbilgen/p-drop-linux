@@ -8,7 +8,9 @@ Files can also be left up and available for download to iOS at all times to anyo
 
 1. Both devices on the same WiFi network
 
-2. On Linux, download `p-drop` from releases above (link: https://github.com/cenkbilgen/p-drop-linux/releases/latest/download/p-drop.zip) or compile your own.
+2. On Linux, ownload `p-drop` from releases above (link: https://github.com/cenkbilgen/p-drop-linux/releases/latest/download/p-drop.zip). Unzip the file and run it from the command-line, `./p-drop` or `./p-drop file1 file2`. 
+
+Alternatively, compile your own binary, see below.
 
 3. On iOS, the `p-drop` app
 
@@ -22,7 +24,7 @@ If the iOS app does not see the files automatically, run with `-q` to generate a
 
 ### Compiling
 
-Just run `make`. This will get the go dependencies, compile and link and you will end up with a `p-drop` binary file. 
+Just run `make`. This will get the Go dependencies, compile and link and you will end up with a `p-drop` binary file. 
 The release version is made with `make dist`, it's just statically linked and stripped.
 See the `Makefile`.
 
