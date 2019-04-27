@@ -9,7 +9,6 @@ Files can also be left up and available for download to iOS at all times to anyo
 1. Both devices on the same WiFi network
 
 2. On Linux, ownload `p-drop` from releases above (link: https://github.com/cenkbilgen/p-drop-linux/releases/latest/download/p-drop.zip). Unzip the file and run it from the command-line, `./p-drop` or `./p-drop file1 file2`. 
-
 Alternatively, compile your own binary, see below.
 
 3. On iOS, the `p-drop` app
