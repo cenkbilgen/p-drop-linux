@@ -288,9 +288,9 @@ func main() {
 
 		}
 
-		availableDownloads = make([]AvailableDownload, len(filemap))
-
 	}
+
+	availableDownloads = make([]AvailableDownload, len(filemap))
 
 	//url := "app-p-drop://download?host=" + host + "&port=" + strconv.Itoa(*port) + "&files=1"
 	iface, ip4, err := localIP4()
