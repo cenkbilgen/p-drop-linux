@@ -272,7 +272,7 @@ func main() {
 
 	var server *zeroconf.Server
 
-	if len(flag.Args()) > 0 { // fies specified for uploading
+	if len(flag.Args()) > 0 { // files specified for uploading
 
 		// remaining arguments should be file paths to upload
 		for n, path := range flag.Args() {
@@ -290,49 +290,49 @@ func main() {
 
 		availableDownloads = make([]AvailableDownload, len(filemap))
 
-		//url := "app-p-drop://download?host=" + host + "&port=" + strconv.Itoa(*port) + "&files=1"
-		iface, ip4, err := localIP4()
-		check_error(err, true)
-		host := ip4.String()
-		log.Printf("interface %v - %v\n", iface, ip4)
+	}
 
-		appURL, _ := url.Parse("app-p-drop://download/")
-		parameters := url.Values{}
-		parameters.Add("host", host)
-		parameters.Add("port", strconv.Itoa(*port))
-		var fileKeys []string
-		for fileKey, _ := range filemap {
-			fileKeys = append(fileKeys, fileKey)
-		}
-		fileKeysSeparator := "_||_"
-		parameters.Add("files", strings.Join(fileKeys, fileKeysSeparator)) // encode filemap IDs as _||_ separated
-		appURL.RawQuery = parameters.Encode()
+	//url := "app-p-drop://download?host=" + host + "&port=" + strconv.Itoa(*port) + "&files=1"
+	iface, ip4, err := localIP4()
+	check_error(err, true)
+	host := ip4.String()
+	log.Printf("interface %v - %v\n", iface, ip4)
 
-		// Start Bonjour/ZeroConf Service Registration
+	appURL, _ := url.Parse("app-p-drop://download/")
+	parameters := url.Values{}
+	parameters.Add("host", host)
+	parameters.Add("port", strconv.Itoa(*port))
+	var fileKeys []string
+	for fileKey, _ := range filemap {
+		fileKeys = append(fileKeys, fileKey)
+	}
+	fileKeysSeparator := "_||_"
+	parameters.Add("files", strings.Join(fileKeys, fileKeysSeparator)) // encode filemap IDs as _||_ separated
+	appURL.RawQuery = parameters.Encode()
 
-		name := "p-drop"
-		service := "_p-drop._tcp"
-		domain := "local"
-		txt := []string{"path=" + strings.Join(fileKeys, fileKeysSeparator)}
+	// Start Bonjour/ZeroConf Service Registration
 
-		localInterfaces := []net.Interface{*iface}
-		server, err = zeroconf.Register(name, service, domain, *port, txt, localInterfaces)
-		if err != nil {
-			panic(err)
-		}
+	name := "p-drop"
+	service := "_p-drop._tcp"
+	domain := "local"
+	txt := []string{"path=" + strings.Join(fileKeys, fileKeysSeparator)}
 
-		defer server.Shutdown() // not called in SignalHandler
+	localInterfaces := []net.Interface{*iface}
+	server, err = zeroconf.Register(name, service, domain, *port, txt, localInterfaces)
+	if err != nil {
+		panic(err)
+	}
 
-		// QR Code
+	defer server.Shutdown() // not called in SignalHandler
 
-		if *showQR {
-			qrcode, err := qrcode.New(appURL.String(), qrcode.Medium)
-			check_error(err, false)
+	// QR Code
 
-			fmt.Printf("\n%v\n", qrcode.ToSmallString(false))
-			fmt.Printf("%v\n", appURL.String())
-		}
+	if *showQR {
+		qrcode, err := qrcode.New(appURL.String(), qrcode.Medium)
+		check_error(err, false)
 
+		fmt.Printf("\n%v\n", qrcode.ToSmallString(false))
+		fmt.Printf("%v\n", appURL.String())
 	}
 
 	fmt.Printf("Waiting to recieve files...")
@@ -370,8 +370,8 @@ func main() {
 	}
 
 	//go func() {
-		err := http.ListenAndServeTLS(":"+strconv.Itoa(*port), pub_key, priv_key, router)
-		check_error(err, true)
+	err = http.ListenAndServeTLS(":"+strconv.Itoa(*port), pub_key, priv_key, router)
+	check_error(err, true)
 	//}()
 
 	// fmt.Printf("Waiting for signals\n")
@@ -390,7 +390,7 @@ func main() {
 	log.Printf("Got signal %v. Shutting down\n", s)
 	server.Shutdown()
 
- 	// select {
+	// select {
 	// case s:= <-signalChannel:
 	// 	log.Printf("recevied %v\n", s)
 	// default:
