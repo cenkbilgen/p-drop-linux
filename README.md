@@ -1,5 +1,5 @@
 # p-drop-linux
-Transfer files between iOS and Linux requiring a cloud service. 
+Transfer files between iOS and Linux without requiring a cloud service. 
 
 Transfers are faster, easier and more secure because they are direct with nothing leaving the local network.
 Files can also be left up and available for download to iOS at all times to anyone joining the WiFI network
