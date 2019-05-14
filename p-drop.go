@@ -36,7 +36,7 @@ import (
 
 func UploadBinaryHandler(response http.ResponseWriter, request *http.Request, _ httprouter.Params) {
 
-	log.Printf("upload request %v\n", request)
+	// log.Printf("upload request %v\n", request)
 
 	// -- start
 	err := request.ParseMultipartForm(100000) //use 1 MB in memory, the rest in disk
@@ -49,13 +49,13 @@ func UploadBinaryHandler(response http.ResponseWriter, request *http.Request, _ 
 	//log.Printf("Form %v\n", multipartForm)
 
 	fileParts := multipartForm.File   // File map[string][]*FileHeader
-	valueParts := multipartForm.Value // Value map[string][]string
-
-	for n, valuePart := range valueParts {
-		for m, value := range valuePart {
-			log.Printf("value part %v. %v: %v\n", n, m, value)
-		}
-	}
+	
+	//valueParts := multipartForm.Value // Value map[string][]string
+	// for n, valuePart := range valueParts {
+	// 	for m, value := range valuePart {
+	// 		log.Printf("value part %v. %v: %v\n", n, m, value)
+	// 	}
+	// }
 
 	// iterate all File Parts of Form
 
@@ -64,7 +64,8 @@ func UploadBinaryHandler(response http.ResponseWriter, request *http.Request, _ 
 		for m, header := range filePart {
 			filename := header.Filename
 			size := header.Size
-			log.Printf("file part %v. header %v. %v (%v %v)\n", n, m, header, filename, size)
+		//	log.Printf("file part %v. header %v. %v (%v %v)\n", n, m, header, filename, size)
+			log.Printf("receiving %v (%v)\n", filename, size)
 
 			file, err := header.Open() //first check len(headers) is correct  // io.Reader?
 			if err != nil {
@@ -337,9 +338,9 @@ func main() {
 
 	filemapCount := len(filemap)
 	if filemapCount > 0 {
-		fmt.Printf("Sending %v files and ", filemapCount)
+		fmt.Printf("Ready to send files (%v) and ", filemapCount)
 	}
-	fmt.Printf("Waiting to recieve files...")
+	fmt.Printf("Waiting to recieve files...\n")
 
 	// -- Router
 
