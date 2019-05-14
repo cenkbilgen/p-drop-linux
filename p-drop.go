@@ -296,7 +296,7 @@ func main() {
 	iface, ip4, err := localIP4()
 	check_error(err, true)
 	host := ip4.String()
-	log.Printf("interface %v - %v\n", iface, ip4)
+	// log.Printf("interface %v - %v\n", iface, ip4)
 
 	appURL, _ := url.Parse("app-p-drop://download/")
 	parameters := url.Values{}
@@ -335,6 +335,10 @@ func main() {
 		fmt.Printf("%v\n", appURL.String())
 	}
 
+	filemapCount := len(filemap)
+	if filemapCount > 0 {
+		fmt.Printf("Sending %v files and ", filemapCount)
+	}
 	fmt.Printf("Waiting to recieve files...")
 
 	// -- Router
@@ -347,7 +351,7 @@ func main() {
 	// router.POST("/device", DeviceHandler) // to exchange
 
 	// set up directories if not setup
-	// TODO: Linux specific, use path package
+	// TODO: Linux specific, use path packages
 
 	// Configuration
 
