@@ -1,12 +1,12 @@
 package main
 
 import (
-  "os"
-  "log"
-  "image"
-  "image/jpeg"
-  "github.com/nfnt/resize"
-  "bytes"
+	"bytes"
+	"github.com/nfnt/resize"
+	"image"
+	"image/jpeg"
+	//	"log"
+	"os"
 )
 
 func makeJPEGThumbnail(path string, width uint, height uint) (*bytes.Buffer, error) {
@@ -17,15 +17,15 @@ func makeJPEGThumbnail(path string, width uint, height uint) (*bytes.Buffer, err
 	// 	return nil, err
 	// }
 
-//	image, format, err := image.Decode(ioutil.NewReader(data))
+	//	image, format, err := image.Decode(ioutil.NewReader(data))
 	fileReader, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
-	image, format, err := image.Decode(fileReader)
-	log.Printf("Image format %v\n", format)
+	image, _, err := image.Decode(fileReader)
+	//log.Printf("Image format %v\n", format)
 	if err != nil {
-		log.Printf("error decoding %v\n", err)
+		//log.Printf("error decoding %v\n", err)
 		return nil, err
 	}
 

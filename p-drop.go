@@ -48,8 +48,8 @@ func UploadBinaryHandler(response http.ResponseWriter, request *http.Request, _ 
 	multipartForm := request.MultipartForm
 	//log.Printf("Form %v\n", multipartForm)
 
-	fileParts := multipartForm.File   // File map[string][]*FileHeader
-	
+	fileParts := multipartForm.File // File map[string][]*FileHeader
+
 	//valueParts := multipartForm.Value // Value map[string][]string
 	// for n, valuePart := range valueParts {
 	// 	for m, value := range valuePart {
@@ -64,7 +64,7 @@ func UploadBinaryHandler(response http.ResponseWriter, request *http.Request, _ 
 		for m, header := range filePart {
 			filename := header.Filename
 			size := header.Size
-		//	log.Printf("file part %v. header %v. %v (%v %v)\n", n, m, header, filename, size)
+			//	log.Printf("file part %v. header %v. %v (%v %v)\n", n, m, header, filename, size)
 			log.Printf("receiving %v (%v)\n", filename, size)
 
 			file, err := header.Open() //first check len(headers) is correct  // io.Reader?
@@ -192,7 +192,7 @@ func AvailableDownloadsHandler(response http.ResponseWriter, request *http.Reque
 			if mimetype == "image/jpeg" {
 				previewBuffer, err := makeJPEGThumbnail(path, 120, 0)
 				if err != nil {
-					log.Printf("Thumbnail error %v, %v\n", filename, err)
+					//		log.Printf("Thumbnail error %v, %v\n", filename, err)
 				} else {
 					preview = base64.StdEncoding.EncodeToString(previewBuffer.Bytes())
 				}
@@ -297,7 +297,7 @@ func main() {
 	iface, ip4, err := localIP4()
 	check_error(err, true)
 	host := ip4.String()
-	// log.Printf("interface %v - %v\n", iface, ip4)
+	log.Printf("interface %v - %v\n", iface, ip4)
 
 	appURL, _ := url.Parse("app-p-drop://download/")
 	parameters := url.Values{}

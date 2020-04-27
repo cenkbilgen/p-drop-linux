@@ -3,6 +3,7 @@ package main
 import (
 	"net"
 	"strings"
+	"fmt"
 )
 
 // MARK: Network
@@ -49,7 +50,7 @@ func localIP4() (*net.Interface, net.IP, error) {
 		return nil, nil, err
 	}
 	for _, iface := range interfaces { // "interface" is a keyword
-		// fmt.Printf("interface: %v\n", iface)
+		fmt.Printf("interface: %v\n", iface)
 		// fmt.Println("--Unicast")
 		addresses, err := iface.Addrs()
 		if err != nil {
@@ -58,7 +59,7 @@ func localIP4() (*net.Interface, net.IP, error) {
 
 		var ipString string
 		for _, address := range addresses {
-			// fmt.Printf("%v %v\n", address.Network(), address.String())
+			fmt.Printf("%v %v\n", address.Network(), address.String())
 			switch address.Network() {
 			case "ip+net":
 				ipString = strings.Split(address.String(), "/")[0]
