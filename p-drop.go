@@ -302,7 +302,8 @@ func main() {
 	appURL, _ := url.Parse("app-p-drop://download/")
 	parameters := url.Values{}
 	parameters.Add("host", host)
-	parameters.Add("port", strconv.Itoa(*port))
+	portString := strconv.Itoa(*port)
+	parameters.Add("port", portString)
 	var fileKeys []string
 	for fileKey, _ := range filemap {
 		fileKeys = append(fileKeys, fileKey)
@@ -315,11 +316,13 @@ func main() {
 
 	name := "p-drop"
 	service := "_p-drop._tcp"
-	domain := "local"
-	txt := []string{"path=" + strings.Join(fileKeys, fileKeysSeparator)}
+	domain := "local."
+	txt := []string{"txtver=1", "host=" + host, "port=" + portString, "path=" + strings.Join(fileKeys, fileKeysSeparator)}
 
 	localInterfaces := []net.Interface{*iface}
-	server, err = zeroconf.Register(name, service, domain, *port, txt, localInterfaces)
+	log.Printf("localInterfaces: %v\n", localInterfaces)
+	server, err = zeroconf.Register(name, service, domain, *port, txt, localInterfaces 1)
+	//server, err = zeroconf.Register(name, service, domain, 3000, []string{"txtver=1", "p=12345"}, nil)
 	if err != nil {
 		panic(err)
 	}
