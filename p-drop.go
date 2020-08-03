@@ -321,7 +321,7 @@ func main() {
 
 	localInterfaces := []net.Interface{*iface}
 	log.Printf("localInterfaces: %v\n", localInterfaces)
-	server, err = zeroconf.Register(name, service, domain, *port, txt, localInterfaces 1)
+	server, err = zeroconf.Register(name, service, domain, *port, txt, localInterfaces)
 	//server, err = zeroconf.Register(name, service, domain, 3000, []string{"txtver=1", "p=12345"}, nil)
 	if err != nil {
 		panic(err)
