@@ -1,12 +1,16 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"github.com/julienschmidt/httprouter"
 	"log"
+
+	"encoding/json"
+	"github.com/julienschmidt/httprouter"
 	"net/http"
+	"compress/gzip"
+	"sync"
 	//"net/http/httputil" // debugging
+
 	"flag"
 	"io"
 	"io/ioutil"
@@ -35,7 +39,8 @@ import (
 // MARK: Upload Handler
   // response to a recieve request from  client
 
-func UploadBinaryHandler(response http.ResponseWriter, request *http.Request, _ httprouter.Params) {
+type UploadBinaryHandler struct {}
+func (h *UploadBinaryHandler) ServeHTTP(response http.ResponseWriter, request *http.Request) {
 
 	log.Printf("upload request %v\n", request)
 
@@ -80,8 +85,8 @@ func UploadBinaryHandler(response http.ResponseWriter, request *http.Request, _ 
 // keep a map of fileID to a file paths
 // to avoid having the client know anything about the local file paths
 var filemap map[string]string
-
-func DownloadBinaryHandler(response http.ResponseWriter, request *http.Request, _ httprouter.Params) {
+type DownloadBinaryHandler struct {}
+func (h *DownloadBinaryHandler) ServeHTTP(response http.ResponseWriter, request *http.Request) {
 
 	fileID := request.URL.Query().Get("fileID")
 	if len(fileID) == 0 {
@@ -140,7 +145,8 @@ type AvailableDownload struct {
 
 var availableDownloads []AvailableDownload
 
-func AvailableDownloadsHandler(response http.ResponseWriter, request *http.Request, _ httprouter.Params) {
+type AvailableDownloadsHandler struct {}
+func (h *AvailableDownloadsHandler) ServeHTTP(response http.ResponseWriter, request *http.Request) {
 
 	respond := func(response http.ResponseWriter, request *http.Request, status int, err error) {
 		response.Header().Add("Content-Type", "application/json")
@@ -195,6 +201,45 @@ func AvailableDownloadsHandler(response http.ResponseWriter, request *http.Reque
 
 	respond(response, request, http.StatusOK, nil)
 
+}
+
+var gzPool = sync.Pool {
+	New: func() interface{} {
+		w := gzip.NewWriter(ioutil.Discard)
+		return w
+	},
+}
+
+type gzipResponseWriter struct {
+	io.Writer
+	http.ResponseWriter
+}
+
+func (w *gzipResponseWriter) WriterHeader(status int) {
+	w.Header().Del("Content-Length")
+	w.ResponseWriter.WriteHeader(status)
+}
+
+func (w *gzipResponseWriter) Write(b []byte) (int, error) {
+	return w.Writer.Write(b)
+}
+
+func Gzip(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if !strings.Contains(r.Header.Get("Accept-Encoding"), "gzip") {
+			next.ServeHTTP(w, r)
+			return
+		}
+		w.Header().Set("Content-Encoding", "gzip")
+
+		gz := gzPool.Get().(*gzip.Writer)
+		defer gzPool.Put(gz)
+
+		gz.Reset(w)
+		defer gz.Close()
+
+		next.ServeHTTP(&gzipResponseWriter{ResponseWriter: w, Writer: gz}, r)
+	})
 }
 
 var configPath string
@@ -282,9 +327,10 @@ func main() {
 
 	router := httprouter.New()
 
-	router.POST("/upload_binary", UploadBinaryHandler)
-	router.GET("/download_binary", DownloadBinaryHandler)
-	router.GET("/available_downloads", AvailableDownloadsHandler)
+	//router.POST("/upload_binary", Gzip(UploadBinaryHandler))
+	router.Handler(http.MethodPost, "/upload_binary", Gzip(&UploadBinaryHandler{}))
+	router.Handler(http.MethodGet, "/download_binary", Gzip(&DownloadBinaryHandler{}))
+	router.Handler(http.MethodGet, "/available_downloads", Gzip(&AvailableDownloadsHandler{}))
 
 	// Configuration
 
