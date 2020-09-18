@@ -24,3 +24,4 @@ deps:
 	$(GO) get $(GO_GET_FLAGS) "github.com/grandcat/zeroconf"
 	$(GO) get $(GO_GET_FLAGS) "github.com/skip2/go-qrcode"
 	$(GO) get $(GO_GET_FLAGS) "github.com/nfnt/resize"
+	$(GO) get $(GO_GET_FLAGS) "github.com/andybalholm/brotli"

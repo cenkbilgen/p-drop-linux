@@ -291,13 +291,13 @@ func main() {
 	// router.Handler(http.MethodGet, "/download_binary", Gzip(&DownloadBinaryHandler{}))
 	// router.Handler(http.MethodGet, "/available_downloads", Gzip(&AvailableDownloadsHandler{}))
 	// WITH Brotli
-	router.Handler(http.MethodPost, "/upload_binary", Brotli(&UploadBinaryHandler{}))
-	router.Handler(http.MethodGet, "/download_binary", Brotli(&DownloadBinaryHandler{}))
-	router.Handler(http.MethodGet, "/available_downloads", Brotli(&AvailableDownloadsHandler{}))
+	// router.Handler(http.MethodPost, "/upload_binary", Brotli(&UploadBinaryHandler{}))
+	// router.Handler(http.MethodGet, "/download_binary", Brotli(&DownloadBinaryHandler{}))
+	// router.Handler(http.MethodGet, "/available_downloads", Brotli(&AvailableDownloadsHandler{}))
 	// RAW
-	// router.Handler(http.MethodPost, "/upload_binary", &UploadBinaryHandler{})
-	// router.Handler(http.MethodGet, "/download_binary", &DownloadBinaryHandler{})
-	// router.Handler(http.MethodGet, "/available_downloads", &AvailableDownloadsHandler{})
+	router.Handler(http.MethodPost, "/upload_binary", &UploadBinaryHandler{})
+	router.Handler(http.MethodGet, "/download_binary", &DownloadBinaryHandler{})
+	router.Handler(http.MethodGet, "/available_downloads", &AvailableDownloadsHandler{})
 
 	// Configuration
 
