@@ -4,7 +4,7 @@ GO_FLAGS   = -v
 GO_BUILD_FLAGS = $(GO_FLAGS)
 GO_GET_FLAGS = $(GO_FLAGS) # add -u to update
 
-SRCS = p-drop.go generate_keys.go network.go thumbnail.go
+SRCS = p-drop.go generate_keys.go network.go http_gzip.go http_brotli.go thumbnail.go
 BINS = p-drop
 
 all: deps bin
@@ -24,3 +24,4 @@ deps:
 	$(GO) get $(GO_GET_FLAGS) "github.com/grandcat/zeroconf"
 	$(GO) get $(GO_GET_FLAGS) "github.com/skip2/go-qrcode"
 	$(GO) get $(GO_GET_FLAGS) "github.com/nfnt/resize"
+	$(GO) get $(GO_GET_FLAGS) "github.com/andybalholm/brotli"
