@@ -21,6 +21,7 @@ dist: static
 
 deps:
 	$(GO) get $(GO_GET_FLAGS) "github.com/julienschmidt/httprouter"
+	$(GO) get $(GO_GET_FLAGS) "golang.org/x/crypto/ed25519"
 	$(GO) get $(GO_GET_FLAGS) "github.com/grandcat/zeroconf"
 	$(GO) get $(GO_GET_FLAGS) "github.com/skip2/go-qrcode"
 	$(GO) get $(GO_GET_FLAGS) "github.com/nfnt/resize"
